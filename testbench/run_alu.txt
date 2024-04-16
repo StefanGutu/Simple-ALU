@@ -1,5 +1,5 @@
 # add all Verilog source files, separated by spaces
-set sourcefiles {impart.v robertsn.v scazfsc.v CSkA.v orop.v xorop.v noop.v andop.v alu_tb.v alu.v}
+set sourcefiles {shift.v impart.v robertsn.v scazfsc.v CSkA.v orop.v xorop.v noop.v andop.v alu_tb.v alu.v}
 
 # set name of the top module
 set topmodule alu_tb

@@ -23,24 +23,29 @@ localparam P6 = 4'b0101;
 localparam P7 = 4'b0110;
 
 
+wire [15:0] tmp;
+
 wire [31:0] r1,r2,r9;
 wire [15:0] r3,r4,r5,r6,r7,r8;
 wire fin;
 wire br_nxt,cr_nxt;
 
-impart impart_i(.clk(clk),.rst(rst),.bgn(bgn),.inbus_q(nr1[14:0]),.inbus_m(nr2),.out_intreg(r1[31:16]),.out_rest(r1[15:0]),.fin(fin));
 
-robertsn robertsn_i(.clk(clk),.rst(rst),.bgn(bgn),.inbus_q(nr1),.inbus_m(nr2),.outbus(r2),.fin(fin));
+shift shift_i(.x(nr1),.sh(sh),.pos(pos),.z(tmp));
 
-scazfsc scazfsc_i(.x(nr1),.y(nr2),.b(1'b0),.b_next(br_nxt),.z(r3[15:0]));
+impart impart_i(.clk(clk),.rst(rst),.bgn(bgn),.inbus_q(tmp[14:0]),.inbus_m(nr2),.out_intreg(r1[31:16]),.out_rest(r1[15:0]),.fin(fin));
 
-CSkA CSkA_i(.x(nr1),.y(nr2),.c_in(1'b0),.z(r4[15:0]),.c_fin(cr_nxt));
+robertsn robertsn_i(.clk(clk),.rst(rst),.bgn(bgn),.inbus_q(tmp),.inbus_m(nr2),.outbus(r2),.fin(fin));
 
-orop orop_i(.x(nr1),.y(nr2),.z(r5[15:0]));
+scazfsc scazfsc_i(.x(tmp),.y(nr2),.b(1'b0),.b_next(br_nxt),.z(r3[15:0]));
 
-andop andop_i(.x(nr1),.y(nr2),.z(r6[15:0]));
+CSkA CSkA_i(.x(tmp),.y(nr2),.c_in(1'b0),.z(r4[15:0]),.c_fin(cr_nxt));
 
-xorop xorop_i(.x(nr1),.y(nr2),.z(r7[15:0]));
+orop orop_i(.x(tmp),.y(nr2),.z(r5[15:0]));
+
+andop andop_i(.x(tmp),.y(nr2),.z(r6[15:0]));
+
+xorop xorop_i(.x(tmp),.y(nr2),.z(r7[15:0]));
 
 
 always @(posedge clk,posedge rst) begin
